@@ -1,137 +1,136 @@
 # Naifu
 
-naifu (or naifu-diffusion) is designed for training generative models with various configurations and features. The code in the main branch of this repository is under development and subject to change as new features are added.
+naifu（或称naifu-diffusion）是为训练具有各种配置和功能的生成模型而设计的。本仓库主分支中的代码正在开发中，随着新功能的添加可能会发生变化。
 
-## Installation
+## 安装
 
-To get started with Naifu, follow these steps to install the necessary dependencies:
+要开始使用Naifu，请按照以下步骤安装必要的依赖项：
 
 ```bash
-# Clone the Naifu repository:
+# 克隆Naifu仓库：
 git clone --depth 1 https://github.com/mikubill/naifu
 
-# Install the required Python packages:
+# 安装所需的Python包：
 cd naifu && pip install -r requirements.txt
 ```
 
-Make sure you have a compatible version of Python installed (Python 3.9 or above).
+确保您安装了兼容版本的Python（Python 3.9或更高版本）。
 
-## Usage
+## 使用方法
 
-Naifu provides a flexible and intuitive way to train models using various configurations. To train a model, use the trainer.py script and provide the desired configuration file as an argument.
+Naifu提供了一种灵活直观的方式，使用各种配置来训练模型。要训练模型，请使用trainer.py脚本并提供所需的配置文件作为参数。
 
 ```bash
 python trainer.py --config config/<config_file>
 
-# or (same as --config)
+# 或（与--config相同）
 python trainer.py config/<config_file>
 ```
 
-Replace `<config_file>` with one of the available configuration files listed below.
+将`<config_file>`替换为下面列出的可用配置文件之一。
 
-## Configurations
+## 配置
 
-Choose the appropriate configuration file based on training objectives and environment.
+根据训练目标和环境选择适当的配置文件。
 
-Train SDXL (Stable Diffusion XL) model
+训练SDXL（Stable Diffusion XL）模型
 ```bash
-# prepare image data (to latents)
+# 准备图像数据（转换为潜在空间）
 python scripts/encode_latents_xl.py -i <input_path> -o <encoded_path>
 
 # sd_xl_base_1.0_0.9vae.safetensors
 python trainer.py config/train_sdxl.yaml
 
-# For huggingface model support
+# 对于huggingface模型支持
 # stabilityai/stable-diffusion-xl-base-1.0
 python trainer.py config/train_diffusers.yaml
 
-# use original sgm loss module
+# 使用原始sgm损失模块
 python trainer.py config/train_sdxl_original.yaml
 ```
 
-Train SDXL refiner (Stable Diffusion XL refiner) model
+训练SDXL精炼器（Stable Diffusion XL refiner）模型
 ```bash
 # stabilityai/stable-diffusion-xl-refiner-1.0
 python trainer.py config/train_refiner.yaml
 ```
 
-Train original Stable Diffusion 1.4 or 1.5 model
+训练原始Stable Diffusion 1.4或1.5模型
 ```bash
 # runwayml/stable-diffusion-v1-5
-# Note: will save in diffusers format
+# 注意：将以diffusers格式保存
 python trainer.py config/train_sd15.yaml
 ```
 
-Train SDXL model with LyCORIS.
+使用LyCORIS训练SDXL模型
 ```bash
-# Based on the work available at KohakuBlueleaf/LyCORIS
+# 基于KohakuBlueleaf/LyCORIS的工作
 pip install lycoris_lora toml
 python trainer.py config/train_lycoris.yaml
 ```
 
-Use fairscale strategy for distributed data parallel sharded training
+使用fairscale策略进行分布式数据并行分片训练
 ```bash
 pip install fairscale
 python trainer.py config/train_fairscale.yaml
 ```
 
-Train SDXL model with Diffusion DPO  
-Paper: Diffusion Model Alignment Using Direct Preference Optimization ([arxiv:2311.12908](https://arxiv.org/abs/2311.12908))
+使用直接偏好优化（DPO）训练SDXL模型  
+论文：Diffusion Model Alignment Using Direct Preference Optimization ([arxiv:2311.12908](https://arxiv.org/abs/2311.12908))
 ```bash
-# dataset: yuvalkirstain/pickapic_v2
-# Be careful tuning the resolution and dpo_betas!
-# will save in diffusers format
-python trainer.py config/train_dpo_diffusers.yaml # diffusers backend
-python trainer.py config/train_dpo.yaml # sgm backend
+# 数据集：yuvalkirstain/pickapic_v2
+# 调整分辨率和dpo_betas时要小心！
+# 将以diffusers格式保存
+python trainer.py config/train_dpo_diffusers.yaml # diffusers后端
+python trainer.py config/train_dpo.yaml # sgm后端
 ```
 
-Train Pixart-Alpha model  
-Paper: Fast Training of Diffusion Transformer for Photorealistic Text-to-Image Synthesis ([arxiv:2310.00426](https://arxiv.org/abs/2310.00426))
+训练Pixart-Alpha模型  
+论文：Fast Training of Diffusion Transformer for Photorealistic Text-to-Image Synthesis ([arxiv:2310.00426](https://arxiv.org/abs/2310.00426))
 ```bash
 # PixArt-alpha/PixArt-XL-2-1024-MS
 python trainer.py config/train_pixart.yaml
 ```
 
-Train SDXL-LCM model  
-Paper: Latent Consistency Models: Synthesizing High-Resolution Images with Few-Step Inference ([arxiv:2310.04378](https://arxiv.org/abs/2310.04378))
+训练SDXL-LCM模型  
+论文：Latent Consistency Models: Synthesizing High-Resolution Images with Few-Step Inference ([arxiv:2310.04378](https://arxiv.org/abs/2310.04378))
 ```bash
 python trainer.py config/train_lcm.yaml
 ```
 
-Train StableCascade model ([Sai](https://github.com/Stability-AI/StableCascade/))
+训练StableCascade模型（[Sai](https://github.com/Stability-AI/StableCascade/)）
 ```bash
-# currently only stage_c (w/ or w/o text encoder)
+# 目前仅支持stage_c（带或不带文本编码器）
 python trainer.py config/train_cascade_stage_c.yaml
 ```
 
-Train GPT2 model
+训练GPT2模型
 ```bash
-# currently only stage_c (w/ or w/o text encoder)
 python trainer.py config/train_gpt2.yaml
 ```
 
-Train with [Phi-1.5/2](https://huggingface.co/microsoft) model
+使用[Phi-1.5/2](https://huggingface.co/microsoft)模型训练
 ```bash
 python trainer.py config/train_phi2.yaml
 ```
 
-Train language models ([LLaMA](https://github.com/facebookresearch/llama), [Qwen](https://huggingface.co/Qwen), [Gemma](https://huggingface.co/google) etc)
+训练语言模型（[LLaMA](https://github.com/facebookresearch/llama)、[Qwen](https://huggingface.co/Qwen)、[Gemma](https://huggingface.co/google)等）
 ```bash
-# Note that prepare data in sharegpt/chatml format, or define your own dataset in data/text_dataset.py
-# See example dataset for reference: function-calling-sharegpt
+# 注意：准备sharegpt/chatml格式的数据，或在data/text_dataset.py中定义您自己的数据集
+# 参考示例数据集：function-calling-sharegpt
 python trainer.py config/train_general_llm.yaml
 ```
 
-Train language models with lora or qlora (For example, [Mistral](https://huggingface.co/mistralai))
+使用lora或qlora训练语言模型（例如，[Mistral](https://huggingface.co/mistralai)）
 ```bash
 python trainer.py config/train_mistral_lora.yaml
 ```
 
-## Other branches
+## 其他分支
 
-* sgm - Uses the [sgm](https://github.com/Stability-AI/generative-models) to train SDXL models.
-* sd3 - Trainer for SD3 models - use with caution: may produce undesired result
-* hydit - Trainer for hunyuan dit models (v1.1 and v1.2)
-* main-archived - Contains the original naifu-diffusion code for training Stable Diffusion 1.x models.
+* sgm - 使用[sgm](https://github.com/Stability-AI/generative-models)训练SDXL模型。
+* sd3 - SD3模型的训练器 - 谨慎使用：可能产生不期望的结果
+* hydit - 用于训练混元dit模型的训练器（v1.1和v1.2）
+* main-archived - 包含用于训练Stable Diffusion 1.x模型的原始naifu-diffusion代码。
 
-For branches without documentation, please follow the installation instructions provided above.
+对于没有文档的分支，请按照上面提供的安装说明进行操作。
