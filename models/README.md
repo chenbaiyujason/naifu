@@ -2,174 +2,200 @@
 
 ## 目录概述
 
-Models 目录用于存储预训练模型和训练过程中的模型检查点。这个目录的结构和组织方式对于管理不同版本的模型和检查点非常重要。
+Models 目录包含了所有模型的具体实现代码，按照不同的模型类型和功能进行分类组织。每个子目录都包含特定类型模型的核心实现。
 
 ## 目录结构
 
 ```
 models/
-├── checkpoints/           # 训练检查点
-│   ├── sdxl/             # SDXL 模型检查点
-│   ├── llm/              # 语言模型检查点
-│   └── multimodal/       # 多模态模型检查点
-├── pretrained/           # 预训练模型
-│   ├── sdxl/             # SDXL 预训练模型
-│   ├── llm/              # 语言模型预训练
-│   └── multimodal/       # 多模态预训练模型
-└── converted/           # 转换后的模型
-    ├── onnx/             # ONNX 格式模型
-    └── tensorrt/         # TensorRT 格式模型
+├── sgm/              # Stable Generative Models 相关实现
+├── t2iadapter/       # Text-to-Image Adapter 相关实现
+├── pixart/          # PixArt 模型实现
+├── lumina/          # Lumina 模型实现
+├── llm/             # 语言模型实现
+├── ip_adapter/      # IP-Adapter 模型实现
+├── llava/           # LLaVA 模型实现
+├── hdit/            # HDIT 模型实现
+├── cascade/         # Cascade 模型实现
+├── clip/            # CLIP 模型实现
+└── gdf/             # GDF 模型实现
+├── sdxl/             # SDXL 模型实现
+│   ├── sdxl_model.py            # 基础模型实现
+│   ├── sdxl_model_cn.py         # 中文版本模型实现
+│   ├── sdxl_model_diffusers.py  # Diffusers 版本实现
+│   ├── sdxl_model_ipadapter.py  # IP-Adapter 模型实现
+│   ├── sdxl_dpo.py             # DPO 训练模型
+│   └── sdxl_dpo_diffusers.py   # DPO Diffusers 版本
+├── lumina2/          # Lumina2 模型实现
+│   └── lumina2_model.py        # Lumina2 模型核心实现
+└── clip/             # CLIP 模型实现
+    └── clip_model.py           # CLIP 模型核心实现
 ```
 
-## 模型类型
+## 子目录详细说明
 
-### 1. SDXL 相关模型
+### 1. SGM (Stable Generative Models)
+- 用途：实现稳定扩散模型的核心组件
+- 主要内容：
+  - UNet 架构实现
+  - 注意力机制
+  - 条件控制模块
+  - 采样器实现
+  - 损失函数定义
 
-- 基础 SDXL 模型
-- SDXL Refiner
-- SDXL 中文版本
-- SDXL IP-Adapter
+### 2. T2IAdapter (Text-to-Image Adapter)
+- 用途：实现文本到图像的适配器模型
+- 主要内容：
+  - 特征提取器
+  - 跨模态映射层
+  - 条件注入模块
+  - 适配器训练逻辑
 
-### 2. 语言模型
+### 3. PixArt
+- 用途：实现 PixArt 图像生成模型
+- 主要内容：
+  - Transformer 架构
+  - 位置编码
+  - 多尺度处理
+  - 图像生成逻辑
 
-- GPT-2 模型
-- Phi-2 模型
-- Mistral 模型
-- 通用语言模型
+### 4. Lumina
+- 用途：实现 Lumina 系列模型
+- 主要内容：
+  - 基础架构定义
+  - 特征提取模块
+  - 生成器网络
+  - 训练策略实现
 
-### 3. 多模态模型
+### 5. LLM (Language Models)
+- 用途：实现各种语言模型
+- 主要内容：
+  - Transformer 实现
+  - 注意力机制
+  - 分词器集成
+  - 预训练任务
+  - 微调逻辑
 
-- CLIP 模型
-- LLaVA 模型
-- LLaVA 1.6 模型
+### 6. IP-Adapter
+- 用途：实现图像提示适配器
+- 主要内容：
+  - 图像编码器
+  - 跨模态融合
+  - 特征映射
+  - 控制网络
 
-### 4. 其他生成模型
+### 7. LLaVA
+- 用途：实现大规模视觉-语言模型
+- 主要内容：
+  - 视觉编码器
+  - 多模态融合
+  - 对话系统
+  - 训练策略
 
-- Cascade 模型
-- PixArt 模型
-- LCM 模型
+### 8. HDIT
+- 用途：实现高清图像转换模型
+- 主要内容：
+  - 图像处理模块
+  - 超分辨率网络
+  - 质量增强模块
+  - 损失函数
 
-## 模型管理指南
+### 9. Cascade
+- 用途：实现级联生成模型
+- 主要内容：
+  - 多阶段生成器
+  - 特征提取器
+  - 质量改进模块
+  - 训练流程
 
-### 1. 检查点命名规范
+### 10. CLIP
+- 用途：实现对比语言-图像预训练模型
+- 主要内容：
+  - 图像编码器
+  - 文本编码器
+  - 对比学习逻辑
+  - 多模态对齐
 
+### 11. GDF (Generative Diffusion Framework)
+- 用途：实现通用扩散模型框架
+- 主要内容：
+  - 扩散过程定义
+  - 采样策略
+  - 噪声预测器
+  - 训练工具
+
+### 12. SDXL
+- 用途：实现 SDXL 系列模型
+- 主要内容：
+  - 基础 SDXL 模型架构
+  - 中文版本特殊实现
+  - IP-Adapter 集成
+  - DPO 训练支持
+  - Diffusers 集成
+
+### 13. Lumina2
+- 用途：实现 Lumina2 图像生成模型
+- 主要内容：
+  - 基础架构定义
+  - 特征提取模块
+  - 生成器网络
+  - 训练策略实现
+
+## 开发指南
+
+### 1. 添加新模型
+```python
+# 在对应目录下创建模型类
+class NewModel(nn.Module):
+    def __init__(self, config: Dict[str, Any]):
+        super().__init__()
+        self.config = config
+        # 实现模型初始化
+        
+    def forward(self, x: torch.Tensor) -> torch.Tensor:
+        # 实现前向传播
+        pass
 ```
-# 检查点命名格式
-{model_type}-{version}-{timestamp}-{step}.ckpt
 
-# 示例
-sdxl-v1.0-20240305-100000.ckpt
-llava-1.6-20240305-50000.ckpt
-```
+### 2. 代码规范
+- 所有模型必须继承 `nn.Module`
+- 提供完整的类型注解
+- 添加详细的文档字符串
+- 实现模型序列化方法
 
-### 2. 模型版本控制
-
-- 使用语义化版本号
-- 记录模型变更历史
-- 保存配置文件副本
-
-### 3. 模型转换
-
-#### ONNX 转换
-```
-python tools/convert_to_onnx.py \
-    --model path/to/model.ckpt \
-    --output path/to/model.onnx \
-    --input_shape 1,3,1024,1024
-```
-
-#### TensorRT 转换
-```
-python tools/convert_to_tensorrt.py \
-    --onnx path/to/model.onnx \
-    --output path/to/model.engine \
-    --fp16
-```
-
-## 存储管理
-
-### 1. 空间管理
-
-- 定期清理旧检查点
-- 压缩不常用模型
-- 使用软链接管理大文件
-
-### 2. 备份策略
-
-- 定期备份重要模型
-- 使用版本控制系统
-- 多地备份关键文件
-
-### 3. 访问控制
-
-- 设置适当的文件权限
-- 记录访问日志
-- 实现用户认证
+### 3. 测试要求
+- 单元测试覆盖
+- 集成测试
+- 性能测试
+- 内存测试
 
 ## 最佳实践
 
-### 1. 模型选择
+### 1. 模型实现
+- 模块化设计
+- 清晰的接口定义
+- 灵活的配置系统
+- 优化的性能实现
 
-- 根据任务选择合适的基础模型
-- 考虑计算资源限制
-- 评估模型性能指标
-
-### 2. 检查点管理
-
-- 保存关键训练节点
-- 记录实验配置
-- 标注模型特点
+### 2. 代码组织
+- 相关功能集中
+- 避免代码重复
+- 合理的抽象层次
+- 清晰的依赖关系
 
 ### 3. 性能优化
-
-- 模型量化
-- 模型剪枝
-- 知识蒸馏
-
-## 使用示例
-
-### 1. 加载预训练模型
-
-```
-from modules.sdxl_model import SDXLModel
-
-model = SDXLModel.from_pretrained(
-    "models/pretrained/sdxl/v1.0/model.safetensors"
-)
-```
-
-### 2. 保存检查点
-
-```
-# 保存完整检查点
-model.save_checkpoint(
-    "models/checkpoints/sdxl/model-v1.0-step100k.ckpt",
-    save_optimizer=True
-)
-
-# 保存模型权重
-model.save_weights(
-    "models/checkpoints/sdxl/weights-v1.0.safetensors"
-)
-```
-
-### 3. 模型转换
-
-```
-# 转换为 ONNX
-model.export_onnx(
-    "models/converted/onnx/model-v1.0.onnx",
-    input_shapes={"x": [1, 3, 1024, 1024]}
-)
-```
+- 使用 torch.jit
+- 实现并行计算
+- 优化内存使用
+- 支持混合精度
 
 ## 常见问题
 
-### Q: 如何选择合适的检查点？
-A: 根据验证集性能和具体应用场景选择最佳检查点
+### Q: 如何选择合适的模型架构？
+A: 根据任务需求和资源限制选择，参考现有实现
 
-### Q: 如何处理模型兼容性问题？
-A: 保存完整的配置信息，使用版本转换工具
+### Q: 如何优化模型性能？
+A: 使用性能分析工具，实现并行计算，优化内存使用
 
-### Q: 如何优化模型存储空间？
-A: 使用模型压缩技术，只保留必要的检查点 
+### Q: 如何确保模型实现正确？
+A: 添加完整的测试，验证核心功能，对比参考实现 
