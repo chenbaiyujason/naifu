@@ -69,7 +69,7 @@
 
 ### SDXL 训练
 
-<code>
+```
 # 基础 SDXL 训练
 python trainer.py config/train_sdxl.yaml
 
@@ -78,17 +78,17 @@ python trainer.py config/train_sdxl_hezi_deepspeed.yaml
 
 # 使用 IP-Adapter
 python trainer.py config/train_sdxl_hezi_ipadapter.yaml
-</code>
+```
 
 ### 语言模型训练
 
-<code>
+```
 # 通用语言模型训练
 python trainer.py config/train_general_llm.yaml
 
 # GPT-2 训练
 python trainer.py config/train_gpt2.yaml
-</code>
+```
 
 ## 开发指南
 

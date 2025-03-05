@@ -47,7 +47,7 @@ Data Loader 目录包含了项目中所有的数据加载、预处理和数据�
 ### 1. 数据转换
 
 #### CSV 转 Arrow 格式
-<code>
+```
 # 基础转换
 python data_loader/csv2arrow.py \
     --input data.csv \
@@ -58,20 +58,20 @@ python data_loader/csv2arrow_full_with_score_check.py \
     --input data.csv \
     --output data.arrow \
     --min_score 7.0
-</code>
+```
 
 #### 数据清洗
-<code>
+```
 python data_loader/data_clean.py \
     --input dirty_data.arrow \
     --output clean_data.arrow \
     --rules rules.json
-</code>
+```
 
 ### 2. 数据加载
 
 #### 基础数据加载
-<code>
+```
 from data_loader.arrow_load_stream import ArrowStreamLoader
 
 loader = ArrowStreamLoader(
@@ -79,10 +79,10 @@ loader = ArrowStreamLoader(
     batch_size=32,
     shuffle=True
 )
-</code>
+```
 
 #### CLIP 数据加载
-<code>
+```
 from data_loader.arrow_load_stream_for_clip import ClipArrowStreamLoader
 
 loader = ClipArrowStreamLoader(
@@ -90,7 +90,7 @@ loader = ClipArrowStreamLoader(
     batch_size=32,
     image_size=224
 )
-</code>
+```
 
 ## 数据格式规范
 
@@ -124,7 +124,7 @@ loader = ClipArrowStreamLoader(
 4. 实现批处理逻辑
 
 示例：
-<code>
+```
 class CustomDataLoader:
     def __init__(
         self,
@@ -143,7 +143,7 @@ class CustomDataLoader:
     def __len__(self):
         # 实现数据长度计算
         pass
-</code>
+```
 
 ### 代码规范
 

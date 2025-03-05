@@ -6,7 +6,7 @@ Models 目录用于存储预训练模型和训练过程中的模型检查点。�
 
 ## 目录结构
 
-<code>
+```
 models/
 ├── checkpoints/           # 训练检查点
 │   ├── sdxl/             # SDXL 模型检查点
@@ -19,7 +19,7 @@ models/
 └── converted/           # 转换后的模型
     ├── onnx/             # ONNX 格式模型
     └── tensorrt/         # TensorRT 格式模型
-</code>
+```
 
 ## 模型类型
 
@@ -53,14 +53,14 @@ models/
 
 ### 1. 检查点命名规范
 
-<code>
+```
 # 检查点命名格式
 {model_type}-{version}-{timestamp}-{step}.ckpt
 
 # 示例
 sdxl-v1.0-20240305-100000.ckpt
 llava-1.6-20240305-50000.ckpt
-</code>
+```
 
 ### 2. 模型版本控制
 
@@ -71,20 +71,20 @@ llava-1.6-20240305-50000.ckpt
 ### 3. 模型转换
 
 #### ONNX 转换
-<code>
+```
 python tools/convert_to_onnx.py \
     --model path/to/model.ckpt \
     --output path/to/model.onnx \
     --input_shape 1,3,1024,1024
-</code>
+```
 
 #### TensorRT 转换
-<code>
+```
 python tools/convert_to_tensorrt.py \
     --onnx path/to/model.onnx \
     --output path/to/model.engine \
     --fp16
-</code>
+```
 
 ## 存储管理
 
@@ -130,17 +130,17 @@ python tools/convert_to_tensorrt.py \
 
 ### 1. 加载预训练模型
 
-<code>
+```
 from modules.sdxl_model import SDXLModel
 
 model = SDXLModel.from_pretrained(
     "models/pretrained/sdxl/v1.0/model.safetensors"
 )
-</code>
+```
 
 ### 2. 保存检查点
 
-<code>
+```
 # 保存完整检查点
 model.save_checkpoint(
     "models/checkpoints/sdxl/model-v1.0-step100k.ckpt",
@@ -151,17 +151,17 @@ model.save_checkpoint(
 model.save_weights(
     "models/checkpoints/sdxl/weights-v1.0.safetensors"
 )
-</code>
+```
 
 ### 3. 模型转换
 
-<code>
+```
 # 转换为 ONNX
 model.export_onnx(
     "models/converted/onnx/model-v1.0.onnx",
     input_shapes={"x": [1, 3, 1024, 1024]}
 )
-</code>
+```
 
 ## 常见问题
 

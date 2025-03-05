@@ -16,28 +16,28 @@ Naifu（又称 naifu-diffusion）是一个强大的生成式模型训练框架�
 
 ### 安装
 
-<code>
+```
 # 克隆仓库
 git clone --depth 1 https://github.com/mikubill/naifu
 
 # 安装依赖
 cd naifu
 pip install -r requirements.txt
-</code>
+```
 
 ### 基本使用
 
-<code>
+```
 # 训练 SDXL 模型
 python trainer.py config/train_sdxl.yaml
 
 # 训练语言模型
 python trainer.py config/train_general_llm.yaml
-</code>
+```
 
 ## 项目结构
 
-<code>
+```
 naifu/
 ├── modules/           # 核心模型和训练模块
 ├── data_loader/       # 数据加载和处理
@@ -46,7 +46,7 @@ naifu/
 ├── config/           # 配置文件
 ├── models/           # 预训练模型
 └── docs/            # 文档
-</code>
+```
 
 ## 模块说明
 
@@ -74,7 +74,7 @@ naifu/
 
 ### 配置文件结构
 
-<code>
+```
 # 基本配置结构
 trainer:
   seed: 42
@@ -96,7 +96,7 @@ optimizer:
   params:
     lr: 1e-5
     weight_decay: 0.01
-</code>
+```
 
 ### 常用配置文件
 

@@ -40,7 +40,7 @@ Config 目录包含了项目中所有模型训练的配置文件。这些配置�
 
 ### 基本结构示例
 
-<code>
+```
 # 训练器配置
 trainer:
   seed: 42                # 随机种子
@@ -65,7 +65,7 @@ optimizer:
   params:
     lr: 1e-5            # 学习率
     weight_decay: 0.01  # 权重衰减
-</code>
+```
 
 ## 使用指南
 
@@ -73,7 +73,7 @@ optimizer:
 
 根据训练需求选择合适的配置文件：
 
-<code>
+```
 # SDXL 基础训练
 python trainer.py config/train_sdxl.yaml
 
@@ -82,28 +82,28 @@ python trainer.py config/train_sdxl_deepspeed.yaml
 
 # 语言模型训练
 python trainer.py config/train_general_llm.yaml
-</code>
+```
 
 ### 2. 自定义配置
 
 #### 修改训练参数
-<code>
+```
 trainer:
   seed: 42
   max_steps: 50000
   save_every: 5000
   eval_every: 1000
-</code>
+```
 
 #### 修改模型参数
-<code>
+```
 model:
   type: "sdxl"
   params:
     hidden_size: 1024
     num_layers: 24
     dropout: 0.1
-</code>
+```
 
 ## 配置项说明
 

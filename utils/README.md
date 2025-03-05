@@ -16,12 +16,12 @@ Utils 目录包含了项目中使用的各种工具函数和辅助脚本。这�
 - 差异可视化
 
 使用示例：
-<code>
+```
 python utils/compare_model.py \
     --model1 path/to/model1 \
     --model2 path/to/model2 \
     --output comparison_result.txt
-</code>
+```
 
 ### 2. 文件移动工具 (mv_file.py)
 
@@ -33,12 +33,12 @@ python utils/compare_model.py \
 - 目录结构重组
 
 使用示例：
-<code>
+```
 python utils/mv_file.py \
     --source source_dir \
     --target target_dir \
     --pattern "*.jpg"
-</code>
+```
 
 ### 3. 解压工具 (untar.py)
 
@@ -50,11 +50,11 @@ python utils/mv_file.py \
 - 批量处理功能
 
 使用示例：
-<code>
+```
 python utils/untar.py \
     --input archive.tar.gz \
     --output output_dir
-</code>
+```
 
 ## 开发指南
 

@@ -14,7 +14,7 @@ Scripts 目录包含了项目中的各种辅助脚本，用于数据处理、模
 - `run_llava.py`: LLaVA 模型推理脚本
 
 使用示例：
-<code>
+```
 # Cascade 模型推理
 python scripts/cascade_inf.py \
     --model path/to/model \
@@ -26,7 +26,7 @@ python scripts/gpt2_inference.py \
     --model path/to/model \
     --prompt "your prompt" \
     --max_length 100
-</code>
+```
 
 ### 2. 数据处理工具
 
@@ -35,7 +35,7 @@ python scripts/gpt2_inference.py \
 - `wd14_tagger.py`: WD14 标签生成器
 
 使用示例：
-<code>
+```
 # 使用 DeepDanbooru 生成标签
 python scripts/deepdanbooru.py \
     --input path/to/images \
@@ -45,18 +45,18 @@ python scripts/deepdanbooru.py \
 python scripts/wd14_tagger.py \
     --input path/to/images \
     --output tags.csv
-</code>
+```
 
 #### 数据编码
 - `encode_latents_xl.py`: SDXL 潜空间编码工具
 
 使用示例：
-<code>
+```
 python scripts/encode_latents_xl.py \
     --input path/to/images \
     --output path/to/latents \
     --batch_size 32
-</code>
+```
 
 ### 3. 实验和测试工具
 
@@ -75,7 +75,7 @@ python scripts/encode_latents_xl.py \
 
 使用 DeepDanbooru 或 WD14 为图像生成标签：
 
-<code>
+```
 # DeepDanbooru
 python scripts/deepdanbooru.py \
     --input images/ \
@@ -89,39 +89,39 @@ python scripts/wd14_tagger.py \
     --output tags.csv \
     --batch_size 32 \
     --threshold 0.5
-</code>
+```
 
 ### 2. 潜空间编码
 
 为 SDXL 训练准备数据：
 
-<code>
+```
 python scripts/encode_latents_xl.py \
     --input training_images/ \
     --output encoded_latents/ \
     --batch_size 32 \
     --resolution 1024 \
     --device cuda
-</code>
+```
 
 ### 3. 模型推理
 
 #### LLaVA 推理
-<code>
+```
 python scripts/run_llava.py \
     --model path/to/model \
     --image input.jpg \
     --prompt "描述这张图片"
-</code>
+```
 
 #### Cascade 推理
-<code>
+```
 python scripts/cascade_inf.py \
     --model path/to/model \
     --prompt "生成一张图片" \
     --steps 30 \
     --cfg_scale 7.0
-</code>
+```
 
 ## 开发指南
 

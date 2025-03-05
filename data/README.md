@@ -32,7 +32,7 @@ Data 目录包含了项目中的核心数据处理模块，负责数据集的加
 ### 1. 数据集实现
 
 #### 文本数据集
-<code>
+```
 from data.text_dataset import TextDataset
 
 dataset = TextDataset(
@@ -41,10 +41,10 @@ dataset = TextDataset(
     max_length=512,
     shuffle=True
 )
-</code>
+```
 
 #### LLaVA 数据集
-<code>
+```
 from data.llava_dataset import LLaVADataset
 
 dataset = LLaVADataset(
@@ -53,12 +53,12 @@ dataset = LLaVADataset(
     image_processor=processor,
     tokenizer=tokenizer
 )
-</code>
+```
 
 ### 2. 数据存储管理
 
 #### 图像存储
-<code>
+```
 from data.image_storage import ImageStorage
 
 storage = ImageStorage(
@@ -72,10 +72,10 @@ storage.save(image_id, image_tensor)
 
 # 读取图像
 image = storage.load(image_id)
-</code>
+```
 
 #### 数据分桶
-<code>
+```
 from data.bucket import DynamicBucket
 
 bucket = DynamicBucket(
@@ -90,11 +90,11 @@ bucket.add(data, size)
 
 # 获取批次
 batch = bucket.get_batch()
-</code>
+```
 
 ### 3. 对话处理
 
-<code>
+```
 from data.conversation import Conversation
 
 conversation = Conversation(
@@ -110,7 +110,7 @@ formatted = conversation.get_formatted()
 
 # 添加新消息
 conversation.append_message("user", "请帮我写一首诗")
-</code>
+```
 
 ## 数据处理流程
 
@@ -139,7 +139,7 @@ conversation.append_message("user", "请帮我写一首诗")
 ### 添加新数据集
 
 1. 创建数据集类
-<code>
+```
 class CustomDataset:
     def __init__(
         self,
@@ -156,10 +156,10 @@ class CustomDataset:
     def __getitem__(self, idx: int) -> Dict[str, torch.Tensor]:
         # 实现数据加载逻辑
         pass
-</code>
+```
 
 2. 实现数据处理
-<code>
+```
 class CustomProcessor:
     def __init__(self, **kwargs):
         self.kwargs = kwargs
@@ -167,7 +167,7 @@ class CustomProcessor:
     def __call__(self, data: Dict[str, Any]) -> Dict[str, torch.Tensor]:
         # 实现数据处理逻辑
         pass
-</code>
+```
 
 ### 代码规范
 

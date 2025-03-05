@@ -31,7 +31,7 @@ Naifu（又称 naifu-diffusion）是一个用于训练生成式模型的框架�
 
 ## 3. 项目结构
 
-<code>
+```
 project_root/
 ├── trainer.py           # 主训练脚本
 ├── requirements.txt     # 项目依赖
@@ -43,7 +43,7 @@ project_root/
 ├── config/            # 配置文件
 ├── data_loader/       # 数据加载器
 └── common/            # 通用功能模块
-</code>
+```
 
 ## 4. 核心模块说明
 
@@ -57,7 +57,7 @@ project_root/
 - 训练循环控制
 
 关键代码示例：
-<code>
+```
 def main():
     args = parse_args()
     config = OmegaConf.load(args.config)
@@ -78,7 +78,7 @@ def main():
         strategy=strategy, 
         **config.lightning
     )
-</code>
+```
 
 ### 4.2 配置系统
 
@@ -98,27 +98,27 @@ def main():
 
 ### 5.1 安装
 
-<code>
+```
 # 克隆仓库
 git clone --depth 1 https://github.com/mikubill/naifu
 
 # 安装依赖
 cd naifu && pip install -r requirements.txt
-</code>
+```
 
 ### 5.2 基本使用
 
-<code>
+```
 # 基本训练命令
 python trainer.py --config config/<config_file>
 
 # 或者
 python trainer.py config/<config_file>
-</code>
+```
 
 ### 5.3 SDXL 训练示例
 
-<code>
+```
 # 准备图像数据（转换为潜空间）
 python scripts/encode_latents_xl.py -i <input_path> -o <encoded_path>
 
@@ -127,7 +127,7 @@ python trainer.py config/train_sdxl.yaml
 
 # 使用 Hugging Face 模型
 python trainer.py config/train_diffusers.yaml
-</code>
+```
 
 ## 6. 高级特性
 
