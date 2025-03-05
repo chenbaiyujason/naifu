@@ -1,137 +1,187 @@
-# Naifu
+我会帮您创建详细的项目文档。首先让我查看项目的结构。
 
-naifu (or naifu-diffusion) is designed for training generative models with various configurations and features. The code in the main branch of this repository is under development and subject to change as new features are added.
+Ran tool
+让我们深入了解一下主要的代码文件和模块。首先查看 README.md 来了解项目的基本信息。
 
-## Installation
+Read file: README.md
+让我们继续查看一些主要的代码文件。
 
-To get started with Naifu, follow these steps to install the necessary dependencies:
+Read file: trainer.py
+基于对项目的了解，我将为您创建一个详细的项目文档。以下是文档的结构：
 
-```bash
-# Clone the Naifu repository:
+# Naifu 项目文档
+
+## 1. 项目概述
+
+Naifu（又称 naifu-diffusion）是一个用于训练生成式模型的框架，支持多种配置和特性。该项目主要用于训练和微调各种生成式模型，包括：
+
+- Stable Diffusion XL (SDXL)
+- SDXL Refiner
+- Stable Diffusion 1.4/1.5
+- PixArt-Alpha
+- LCM (Latent Consistency Models)
+- StableCascade
+- 各种语言模型 (GPT2, LLaMA, Qwen, Gemma 等)
+
+## 2. 系统要求
+
+- Python 3.9 或更高版本
+- CUDA 兼容的 GPU
+- 足够的 GPU 显存（根据模型大小而定）
+
+## 3. 项目结构
+
+<code>
+project_root/
+├── trainer.py           # 主训练脚本
+├── requirements.txt     # 项目依赖
+├── modules/            # 核心模块目录
+├── utils/             # 工具函数
+├── scripts/           # 辅助脚本
+├── models/            # 模型定义
+├── dataset/           # 数据集处理
+├── config/            # 配置文件
+├── data_loader/       # 数据加载器
+└── common/            # 通用功能模块
+</code>
+
+## 4. 核心模块说明
+
+### 4.1 训练器 (trainer.py)
+
+主要训练脚本，负责：
+- 配置加载和解析
+- 训练环境初始化
+- 分布式训练支持
+- 日志记录
+- 训练循环控制
+
+关键代码示例：
+<code>
+def main():
+    args = parse_args()
+    config = OmegaConf.load(args.config)
+    config.trainer.resume = args.resume
+    plugins = []
+
+    # 初始化训练策略
+    strategy = config.lightning.pop("strategy", "auto")
+    strategy_params = config.lightning.pop("strategy_params", {})
+    
+    # 设置日志记录器
+    loggers = pl.fabric.loggers.CSVLogger(".")
+    
+    # 初始化训练环境
+    fabric = pl.Fabric(
+        loggers=[loggers], 
+        plugins=plugins, 
+        strategy=strategy, 
+        **config.lightning
+    )
+</code>
+
+### 4.2 配置系统
+
+项目使用 YAML 格式的配置文件，支持多种训练场景：
+
+- train_sdxl.yaml: SDXL 模型训练
+- train_refiner.yaml: SDXL refiner 训练
+- train_sd15.yaml: Stable Diffusion 1.5 训练
+- train_lycoris.yaml: LyCORIS 训练
+- train_dpo.yaml: Diffusion DPO 训练
+- train_pixart.yaml: PixArt-Alpha 训练
+- train_lcm.yaml: LCM 模型训练
+- train_cascade_stage_c.yaml: StableCascade 训练
+- train_general_llm.yaml: 通用语言模型训练
+
+## 5. 使用指南
+
+### 5.1 安装
+
+<code>
+# 克隆仓库
 git clone --depth 1 https://github.com/mikubill/naifu
 
-# Install the required Python packages:
+# 安装依赖
 cd naifu && pip install -r requirements.txt
-```
+</code>
 
-Make sure you have a compatible version of Python installed (Python 3.9 or above).
+### 5.2 基本使用
 
-## Usage
-
-Naifu provides a flexible and intuitive way to train models using various configurations. To train a model, use the trainer.py script and provide the desired configuration file as an argument.
-
-```bash
+<code>
+# 基本训练命令
 python trainer.py --config config/<config_file>
 
-# or (same as --config)
+# 或者
 python trainer.py config/<config_file>
-```
+</code>
 
-Replace `<config_file>` with one of the available configuration files listed below.
+### 5.3 SDXL 训练示例
 
-## Configurations
-
-Choose the appropriate configuration file based on training objectives and environment.
-
-Train SDXL (Stable Diffusion XL) model
-```bash
-# prepare image data (to latents)
+<code>
+# 准备图像数据（转换为潜空间）
 python scripts/encode_latents_xl.py -i <input_path> -o <encoded_path>
 
-# sd_xl_base_1.0_0.9vae.safetensors
+# 使用基础 SDXL 模型训练
 python trainer.py config/train_sdxl.yaml
 
-# For huggingface model support
-# stabilityai/stable-diffusion-xl-base-1.0
+# 使用 Hugging Face 模型
 python trainer.py config/train_diffusers.yaml
+</code>
 
-# use original sgm loss module
-python trainer.py config/train_sdxl_original.yaml
-```
+## 6. 高级特性
 
-Train SDXL refiner (Stable Diffusion XL refiner) model
-```bash
-# stabilityai/stable-diffusion-xl-refiner-1.0
-python trainer.py config/train_refiner.yaml
-```
+### 6.1 分布式训练
 
-Train original Stable Diffusion 1.4 or 1.5 model
-```bash
-# runwayml/stable-diffusion-v1-5
-# Note: will save in diffusers format
-python trainer.py config/train_sd15.yaml
-```
+支持多种分布式训练策略：
+- DDP (DistributedDataParallel)
+- FSDP (Fully Sharded Data Parallel)
+- DeepSpeed
+- FairScale
 
-Train SDXL model with LyCORIS.
-```bash
-# Based on the work available at KohakuBlueleaf/LyCORIS
-pip install lycoris_lora toml
-python trainer.py config/train_lycoris.yaml
-```
+### 6.2 精度控制
 
-Use fairscale strategy for distributed data parallel sharded training
-```bash
-pip install fairscale
-python trainer.py config/train_fairscale.yaml
-```
+支持多种精度训练模式：
+- FP32
+- FP16
+- BF16
+- 混合精度训练
 
-Train SDXL model with Diffusion DPO  
-Paper: Diffusion Model Alignment Using Direct Preference Optimization ([arxiv:2311.12908](https://arxiv.org/abs/2311.12908))
-```bash
-# dataset: yuvalkirstain/pickapic_v2
-# Be careful tuning the resolution and dpo_betas!
-# will save in diffusers format
-python trainer.py config/train_dpo_diffusers.yaml # diffusers backend
-python trainer.py config/train_dpo.yaml # sgm backend
-```
+### 6.3 模型优化
 
-Train Pixart-Alpha model  
-Paper: Fast Training of Diffusion Transformer for Photorealistic Text-to-Image Synthesis ([arxiv:2310.00426](https://arxiv.org/abs/2310.00426))
-```bash
-# PixArt-alpha/PixArt-XL-2-1024-MS
-python trainer.py config/train_pixart.yaml
-```
+支持多种模型优化技术：
+- LoRA
+- QLoRA
+- LyCORIS
+- DPO (Direct Preference Optimization)
 
-Train SDXL-LCM model  
-Paper: Latent Consistency Models: Synthesizing High-Resolution Images with Few-Step Inference ([arxiv:2310.04378](https://arxiv.org/abs/2310.04378))
-```bash
-python trainer.py config/train_lcm.yaml
-```
+## 7. 常见问题解答
 
-Train StableCascade model ([Sai](https://github.com/Stability-AI/StableCascade/))
-```bash
-# currently only stage_c (w/ or w/o text encoder)
-python trainer.py config/train_cascade_stage_c.yaml
-```
+1. 显存不足怎么办？
+   - 尝试减小 batch size
+   - 使用梯度累积
+   - 启用 gradient checkpointing
+   - 考虑使用 LoRA 或 QLoRA
 
-Train GPT2 model
-```bash
-# currently only stage_c (w/ or w/o text encoder)
-python trainer.py config/train_gpt2.yaml
-```
+2. 训练中断如何恢复？
+   - 使用 `--resume` 参数指定检查点路径
+   - 确保检查点文件完整
 
-Train with [Phi-1.5/2](https://huggingface.co/microsoft) model
-```bash
-python trainer.py config/train_phi2.yaml
-```
+3. 如何调整学习率？
+   - 在配置文件中修改 `learning_rate` 参数
+   - 可以使用学习率调度器
+   - 建议从小的学习率开始调整
 
-Train language models ([LLaMA](https://github.com/facebookresearch/llama), [Qwen](https://huggingface.co/Qwen), [Gemma](https://huggingface.co/google) etc)
-```bash
-# Note that prepare data in sharegpt/chatml format, or define your own dataset in data/text_dataset.py
-# See example dataset for reference: function-calling-sharegpt
-python trainer.py config/train_general_llm.yaml
-```
+## 8. 贡献指南
 
-Train language models with lora or qlora (For example, [Mistral](https://huggingface.co/mistralai))
-```bash
-python trainer.py config/train_mistral_lora.yaml
-```
+1. Fork 项目
+2. 创建特性分支
+3. 提交更改
+4. 推送到分支
+5. 创建 Pull Request
 
-## Other branches
+## 9. 许可证
 
-* sgm - Uses the [sgm](https://github.com/Stability-AI/generative-models) to train SDXL models.
-* sd3 - Trainer for SD3 models - use with caution: may produce undesired result
-* hydit - Trainer for hunyuan dit models (v1.1 and v1.2)
-* main-archived - Contains the original naifu-diffusion code for training Stable Diffusion 1.x models.
+项目使用 LICENSE 文件中指定的许可证。
 
-For branches without documentation, please follow the installation instructions provided above.
+这个文档提供了项目的主要组件和功能的概述。如果您需要某个特定模块或功能的更详细说明，我可以为您深入解释。
